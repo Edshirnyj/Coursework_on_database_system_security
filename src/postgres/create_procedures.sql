@@ -80,7 +80,6 @@ BEGIN
     VALUES (first_name, second_name, third_name, phone, email, existing_passport);
 END;
 $$;
-
 /*
 Вызов:
 CALL AddNewClient('John', 'Doe', 'Smith',
@@ -93,11 +92,90 @@ CALL AddNewClient('John', 'Doe', 'Smith',
 */
 
 /*
-2. UpdateCustomerDetails  
+2. UpdateClientDetails  
    Обновление информации о клиенте.  
    Изменяет контактные и персональные данные, проводит проверку корректности обновлений.
 */
+CREATE OR REPLACE PROCEDURE UpdateClientDetails(
+    IN u_client_id UUID,
+    IN u_first_name VARCHAR(255),
+    IN u_second_name VARCHAR(255),
+    IN u_third_name VARCHAR(255),
+    IN u_phone BYTEA,
+    IN u_email BYTEA,
+    IN u_passport_number BYTEA,
+    IN u_passport_session BYTEA
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    existing_passport UUID;
+BEGIN
+    -- Validate input data
+    IF u_first_name IS NULL OR u_second_name IS NULL OR u_third_name IS NULL THEN
+        RAISE EXCEPTION 'Name fields cannot be null';
+    END IF;
 
+    IF octet_length(u_phone) = 0 THEN
+        RAISE EXCEPTION 'Phone cannot be empty';
+    END IF;
+
+    IF octet_length(u_email) = 0 THEN
+        RAISE EXCEPTION 'Email cannot be empty';
+    END IF;
+
+    IF octet_length(u_passport_number) = 0 OR octet_length(u_passport_session) = 0 THEN
+        RAISE EXCEPTION 'Passport data cannot be empty';
+    END IF;
+
+    -- Check if the client exists
+    IF NOT EXISTS (
+        SELECT 1 FROM clients
+        WHERE client_id = u_client_id
+    ) THEN
+        RAISE EXCEPTION 'Client with ID % does not exist', u_client_id;
+    END IF;
+
+    -- Check if the passport already exists and belongs to another client
+    SELECT passport_id INTO existing_passport
+    FROM passports
+    WHERE number = u_passport_number 
+      AND session = u_passport_session 
+      AND citizen_id != (
+          SELECT citizen_id FROM clients WHERE client_id = u_client_id
+      );
+
+    IF existing_passport IS NOT NULL THEN
+        RAISE EXCEPTION 'Passport data already exists for another client';
+    END IF;
+
+    -- Update passport details
+    UPDATE passports
+    SET number = u_passport_number,
+        session = u_passport_session
+    WHERE passport_id = (
+        SELECT passport_id FROM clients WHERE client_id = u_client_id
+    );
+
+    -- Update client details
+    UPDATE clients
+    SET first_name = u_first_name,
+        second_name = u_second_name,
+        third_name = u_third_name,
+        phone = u_phone,
+        email = u_email
+    WHERE client_id = u_client_id;
+END;
+$$;
+/*
+Вызов:
+CALL UpdateClientDetails('John', 'Doe', 'Smith',
+    pgp_sym_encrypt('1234567890', 'key'),
+    pgp_sym_encrypt('john.doe@example.com', 'key'),
+    pgp_sym_encrypt('AB1234567', 'key'),
+    pgp_sym_encrypt('session_data', 'key'),
+);
+*/
 
 /*
 3. DeleteCustomerAccount  
