@@ -169,7 +169,7 @@ END;
 $$;
 /*
 Вызов:
-CALL UpdateClientDetails('John', 'Doe', 'Smith',
+CALL UpdateClientDetails('uuid', 'John', 'Doe', 'Smith',
     pgp_sym_encrypt('1234567890', 'key'),
     pgp_sym_encrypt('john.doe@example.com', 'key'),
     pgp_sym_encrypt('AB1234567', 'key'),
@@ -178,9 +178,53 @@ CALL UpdateClientDetails('John', 'Doe', 'Smith',
 */
 
 /*
-3. DeleteCustomerAccount  
+3. DeleteClientAccount  
    Удаление клиента из базы. 
    Проверяет связанные продажи и контракты перед удалением записи клиента, обеспечивая целостность данных.
+*/
+CREATE OR REPLACE PROCEDURE DeleteClientAccount(
+    IN d_client_id UUID
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    client_passport_id UUID;
+BEGIN
+    -- Check if the client exists
+    IF NOT EXISTS (
+        SELECT 1 FROM clients
+        WHERE client_id = d_client_id
+    ) THEN
+        RAISE EXCEPTION 'Client with ID % does not exist', d_client_id;
+    END IF;
+
+    -- Retrieve the passport ID associated with the client
+    SELECT passport_id INTO client_passport_id
+    FROM clients
+    WHERE client_id = d_client_id;
+
+    -- Update related history_transforms to set client_id to NULL
+    UPDATE history_transforms
+    SET client_id = NULL
+    WHERE client_id = d_client_id;
+
+    -- Update related test_drives to set client_id to NULL
+    UPDATE test_drives
+    SET client_id = NULL
+    WHERE client_id = d_client_id;
+
+    -- Delete the client record
+    DELETE FROM clients
+    WHERE client_id = d_client_id;
+
+    -- Delete the associated passport record
+    DELETE FROM passports
+    WHERE passport_id = client_passport_id;
+END;
+$$;
+/*
+Вывод:
+CALL DeleteClientAccount('uuid');
 */
 
 
