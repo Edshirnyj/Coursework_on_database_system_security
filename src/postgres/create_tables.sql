@@ -63,13 +63,13 @@ CREATE TABLE IF NOT EXISTS models
     name VARCHAR(255) NOT NULL UNIQUE,
     FOREIGN KEY (brand_id) REFERENCES brands(brand_id) ON DELETE CASCADE
 );
-
 CREATE TABLE IF NOT EXISTS autos
 (
     auto_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     model_id UUID NOT NULL,
     year INTEGER NOT NULL CHECK (year >= 1886),
-    vin VARCHAR(255) NOT NULL UNIQUE,
+    vin BYTEA NOT NULL UNIQUE CHECK (octet_length(vin) > 0), -- Encrypted VIN
+    mileage INTEGER NOT NULL CHECK (mileage >= 0), -- Mileage field
     status_id UUID,
 
     FOREIGN KEY (model_id) REFERENCES models(model_id) ON DELETE CASCADE,
@@ -158,3 +158,6 @@ CREATE TABLE IF NOT EXISTS history_transforms
     contract_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL
 );
+
+
+

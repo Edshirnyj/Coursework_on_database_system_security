@@ -233,7 +233,108 @@ CALL DeleteClientAccount('uuid');
    Регистрация нового автомобиля в инвентаре.  
    Вносит информацию о транспортном средстве (марка, год, пробег, VIN и т.д.) с проверками на уникальность.
 */
+CREATE OR REPLACE PROCEDURE AddNewCar(
+    IN brand_name VARCHAR(255),
+    IN model_name VARCHAR(255),
+    IN year INTEGER,
+    IN mileage INTEGER,
+    IN a_vin BYTEA,
+    IN continent_name VARCHAR(255) DEFAULT 'Неизвестно',
+    IN status_name VARCHAR(255) DEFAULT 'В обработке'
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    existing_continent UUID;
+    existing_brand UUID;
+    existing_model UUID;
+    existing_status UUID;
+    existing_auto UUID;
+BEGIN
+    -- Validate input data
+    IF brand_name IS NULL OR model_name IS NULL OR a_vin IS NULL THEN
+        RAISE EXCEPTION 'Brand, model, and VIN cannot be null';
+    END IF;
 
+    IF year < 1886 THEN
+        RAISE EXCEPTION 'Year must be 1886 or later';
+    END IF;
+
+    IF year > EXTRACT(YEAR FROM CURRENT_DATE) THEN
+        RAISE EXCEPTION 'Year cannot be in the future';
+    END IF;
+
+    IF mileage < 0 THEN
+        RAISE EXCEPTION 'Mileage cannot be negative';
+    END IF;
+
+    IF mileage > 1000000 THEN
+        RAISE EXCEPTION 'This car is not considered operational';
+    END IF;
+
+    -- Ensure the continent exists
+    SELECT continent_id INTO existing_continent
+    FROM continents
+    WHERE name = continent_name;
+
+    IF existing_continent IS NULL THEN
+        INSERT INTO continents(name)
+        VALUES (continent_name)
+        RETURNING continent_id INTO existing_continent;
+    END IF;
+
+    -- Ensure the brand exists
+    SELECT brand_id INTO existing_brand
+    FROM brands
+    WHERE name = brand_name AND continent_id = existing_continent;
+
+    IF existing_brand IS NULL THEN
+        INSERT INTO brands(name, continent_id)
+        VALUES (brand_name, existing_continent)
+        RETURNING brand_id INTO existing_brand;
+    END IF;
+
+    -- Ensure the model exists
+    SELECT model_id INTO existing_model
+    FROM models
+    WHERE name = model_name AND brand_id = existing_brand;
+
+    IF existing_model IS NULL THEN
+        INSERT INTO models(name, brand_id)
+        VALUES (model_name, existing_brand)
+        RETURNING model_id INTO existing_model;
+    END IF;
+
+    -- Ensure the status exists
+    SELECT status_id INTO existing_status
+    FROM statuses
+    WHERE name = status_name;
+
+    IF existing_status IS NULL THEN
+        INSERT INTO statuses(name)
+        VALUES (status_name)
+        RETURNING status_id INTO existing_status;
+    END IF;
+
+    -- Check if the car already exists
+    SELECT auto_id INTO existing_auto
+    FROM autos
+    WHERE vin = a_vin;
+
+    IF existing_auto IS NOT NULL THEN
+        RAISE NOTICE 'This car already exists with auto_id: %', existing_auto;
+        RETURN;
+    END IF;
+
+    -- Insert new car
+    INSERT INTO autos(model_id, year, vin, mileage, status_id)
+    VALUES (existing_model, year, a_vin, mileage, existing_status);
+END;
+$$;
+/*
+Вызов:
+CALL AddNewCar('Toyota', 'Camry', 2021, 0, pgp_sym_encrypt('4T1BF1FK0GU572575', 'Key'), 'Япония');
+*/
 
 
 /*
