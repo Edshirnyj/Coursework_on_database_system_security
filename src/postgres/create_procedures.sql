@@ -250,6 +250,8 @@ DECLARE
     existing_model UUID;
     existing_status UUID;
     existing_auto UUID;
+    final_status_name VARCHAR(255);
+    final_mileage INTEGER;
 BEGIN
     -- Validate input data
     IF brand_name IS NULL OR model_name IS NULL OR a_vin IS NULL THEN
@@ -270,6 +272,15 @@ BEGIN
 
     IF mileage > 1000000 THEN
         RAISE EXCEPTION 'This car is not considered operational';
+    END IF;
+
+    -- Set final mileage and status
+    IF mileage = 0 THEN
+        final_mileage := 0;
+        final_status_name := 'Новый';
+    ELSE
+        final_mileage := mileage;
+        final_status_name := status_name;
     END IF;
 
     -- Ensure the continent exists
@@ -308,11 +319,11 @@ BEGIN
     -- Ensure the status exists
     SELECT status_id INTO existing_status
     FROM statuses
-    WHERE name = status_name;
+    WHERE name = final_status_name;
 
     IF existing_status IS NULL THEN
         INSERT INTO statuses(name)
-        VALUES (status_name)
+        VALUES (final_status_name)
         RETURNING status_id INTO existing_status;
     END IF;
 
@@ -328,7 +339,7 @@ BEGIN
 
     -- Insert new car
     INSERT INTO autos(model_id, year, vin, mileage, status_id)
-    VALUES (existing_model, year, a_vin, mileage, existing_status);
+    VALUES (existing_model, year, a_vin, final_mileage, existing_status);
 END;
 $$;
 /*
@@ -342,6 +353,61 @@ CALL AddNewCar('Toyota', 'Camry', 2021, 0, pgp_sym_encrypt('4T1BF1FK0GU572575', 
    Обновление сведений об автомобиле.  
    Позволяет корректировать характеристики авто, например, изменения статуса, пробега или косметических деталей.
 */
+CREATE OR REPLACE PROCEDURE UpdateCarInfo(
+    IN p_auto_id UUID,
+    IN new_status_name VARCHAR(255),
+    IN new_mileage INTEGER DEFAULT NULL,
+    IN new_vin BYTEA DEFAULT NULL
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    existing_status UUID;
+    final_status_name VARCHAR(255);
+BEGIN
+    -- Validate input data
+    IF p_auto_id IS NULL THEN
+        RAISE EXCEPTION 'Auto ID cannot be null';
+    END IF;
+
+    IF new_mileage IS NOT NULL AND new_mileage < 0 THEN
+        RAISE EXCEPTION 'Mileage cannot be negative';
+    END IF;
+
+    IF new_mileage IS NOT NULL AND new_mileage > 1000000 THEN
+        RAISE EXCEPTION 'This car is not considered operational';
+    END IF;
+
+    -- Determine final status name
+    IF new_mileage = 0 AND new_status_name IS NULL THEN
+        final_status_name := 'Новый';
+    ELSE
+        final_status_name := new_status_name;
+    END IF;
+
+    -- Ensure the status exists
+    SELECT status_id INTO existing_status
+    FROM statuses
+    WHERE name = final_status_name;
+
+    IF existing_status IS NULL THEN
+        INSERT INTO statuses(name)
+        VALUES (final_status_name)
+        RETURNING status_id INTO existing_status;
+    END IF;
+
+    -- Update car information
+    UPDATE autos
+    SET status_id = existing_status,
+        mileage = COALESCE(new_mileage, mileage),
+        vin = COALESCE(new_vin, vin)
+    WHERE auto_id = p_auto_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Car with auto_id % does not exist', p_auto_id;
+    END IF;
+END;
+$$;
 
 
 /*
