@@ -408,6 +408,11 @@ BEGIN
     END IF;
 END;
 $$;
+/*
+Вызов:
+CALL UpdateCarInfo('uuid', 'Ремонт', 3000, pgp_sym_encrypt('4T1BF1F43GU572575', 'Key'))
+*/
+
 
 
 /*
@@ -415,7 +420,30 @@ $$;
    Удаление автомобиля из инвентаря.  
    Выполняется при продаже или списании автомобиля, включая проверку связанных сделок.
 */
+CREATE OR REPLACE PROCEDURE RemoveCarFromInventory(
+    IN p_auto_id UUID
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Validate input data
+    IF p_auto_id IS NULL THEN
+        RAISE EXCEPTION 'Auto ID cannot be null';
+    END IF;
 
+    -- Delete the car from the inventory
+    DELETE FROM autos
+    WHERE auto_id = p_auto_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Car with auto_id % does not exist', p_auto_id;
+    END IF;
+END;
+$$;
+/*
+Вызов:
+CALL RemoveCarFromInventory('uuid');
+*/
 
 /*
 7. CreateSaleContract  
