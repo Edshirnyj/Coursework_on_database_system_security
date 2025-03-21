@@ -156,7 +156,11 @@ CREATE TABLE IF NOT EXISTS history_transforms
     client_id UUID NOT NULL,
     worker_id UUID NOT NULL,
     contract_id UUID NOT NULL,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+
+    FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE CASCADE,
+    FOREIGN KEY (worker_id) REFERENCES workers(worker_id) ON DELETE CASCADE,
+    FOREIGN KEY (contract_id) REFERENCES contracts(contract_id) ON DELETE CASCADE
 );
 
 
