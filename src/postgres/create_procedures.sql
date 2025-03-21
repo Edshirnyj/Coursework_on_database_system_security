@@ -493,15 +493,14 @@ CALL RemoveCarFromInventory('uuid');
 
 
 /*
-13. AddEmployeeRecord  
+13. AddWorkerRecord  
     Добавление нового сотрудника.  
     Регистрирует нового сотрудника (продавца, менеджера, техника) с присвоением ролей и прав доступа.
 */
 
 
-
 /*
-14. UpdateEmployeeDetails
+14. UpdateWorkerDetails
     Обновление информации о сотруднике.
     Изменяет контактные данные, должность или статус сотрудника.
 */
@@ -509,7 +508,7 @@ CALL RemoveCarFromInventory('uuid');
 
 
 /*
-15. DeleteEmployeeRecord 
+15. DeleteWorkerRecord 
     Удаление сотрудника из базы. 
     Прорабатывается с проверкой на наличие незавершённых операций или связанных контрактов.
 */
