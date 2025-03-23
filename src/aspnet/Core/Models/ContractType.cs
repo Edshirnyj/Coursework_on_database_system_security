@@ -2,13 +2,13 @@ namespace Core.Models
 {
     public class ContractType
     {
-        public Guid TypeId { get; set; } = Guid.NewGuid();
-        public string Name { get; set; } = string.Empty;
+        public Guid TypeId { get; private set; } = Guid.NewGuid();
+        public string Name { get; private set; } = string.Empty;
 
         private ContractType(Guid typeId, string name)
         {
             TypeId = typeId;
-            Name = name;
+            Name = name.Trim();
         }
 
         public static (ContractType? ContractType, string Error) Create(Guid typeId, string name)
@@ -19,6 +19,10 @@ namespace Core.Models
             {
                 error = "Name cannot be empty.";
             }
+            else if (name.Length > 255)
+            {
+                error = "Name cannot exceed 255 characters.";
+            }
 
             if (!string.IsNullOrEmpty(error))
             {
@@ -27,6 +31,21 @@ namespace Core.Models
 
             var contractType = new ContractType(typeId, name);
             return (contractType, error);
+        }
+
+        private static string ValidateInputs(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return "Name cannot be empty.";
+            }
+
+            if (name.Length > 255)
+            {
+                return "Name cannot exceed 255 characters.";
+            }
+
+            return string.Empty;
         }
     }
 }

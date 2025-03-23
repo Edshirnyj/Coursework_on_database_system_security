@@ -2,12 +2,11 @@ namespace Core.Models
 {
     public class Brand
     {
-        public Guid BrandId { get; set; } = Guid.NewGuid();
-        public string Name { get; set; } = string.Empty;
-        public Guid ContinentId { get; set; }
+        public Guid BrandId { get; private set; } = Guid.NewGuid();
+        public string Name { get; private set; } = string.Empty;
+        public Guid ContinentId { get; private set; }
 
-        // Navigation property for the foreign key
-        public Continent Continent { get; set; } = null!;
+        public Continent Continent { get; private set; } = null!;
 
         private Brand(Guid brandId, string name, Guid continentId)
         {
@@ -18,17 +17,7 @@ namespace Core.Models
 
         public static (Brand? Brand, string Error) Create(Guid brandId, string name, Guid continentId)
         {
-            string error = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                error = "Name cannot be empty.";
-            }
-
-            if (continentId == Guid.Empty)
-            {
-                error = "ContinentId cannot be empty.";
-            }
+            string error = ValidateInputs(name, continentId);
 
             if (!string.IsNullOrEmpty(error))
             {
@@ -37,6 +26,21 @@ namespace Core.Models
 
             var brand = new Brand(brandId, name, continentId);
             return (brand, error);
+        }
+
+        private static string ValidateInputs(string name, Guid continentId)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return "Name cannot be empty.";
+            }
+
+            if (continentId == Guid.Empty)
+            {
+                return "ContinentId cannot be empty.";
+            }
+
+            return string.Empty;
         }
     }
 }

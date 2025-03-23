@@ -1,8 +1,8 @@
 namespace DataAccess.Entites
 {
-    public class ContinentEntity
+    public class PositionEntity
     {
-        public Guid ContinentId { get; private set; } = Guid.NewGuid();
+        public Guid PositionId { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; } = string.Empty;
 
     }

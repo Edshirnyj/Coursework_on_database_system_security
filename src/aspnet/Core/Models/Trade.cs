@@ -2,9 +2,9 @@ namespace Core.Models
 {
     public class Trade
     {
-        public Guid TradeId { get; set; } = Guid.NewGuid();
-        public string PaymentType { get; set; } = string.Empty;
-        public decimal Price { get; set; }
+        public Guid TradeId { get; private set; } = Guid.NewGuid();
+        public string PaymentType { get; private set; } = string.Empty;
+        public decimal Price { get; private set; }
 
         private Trade(Guid tradeId, string paymentType, decimal price)
         {
@@ -15,17 +15,7 @@ namespace Core.Models
 
         public static (Trade? Trade, string Error) Create(Guid tradeId, string paymentType, decimal price)
         {
-            string error = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(paymentType))
-            {
-                error = "Payment type cannot be empty.";
-            }
-
-            if (price < 0)
-            {
-                error = "Price cannot be negative.";
-            }
+            string error = ValidateInputs(paymentType, price);
 
             if (!string.IsNullOrEmpty(error))
             {
@@ -34,6 +24,21 @@ namespace Core.Models
 
             var trade = new Trade(tradeId, paymentType, price);
             return (trade, error);
+        }
+
+        private static string ValidateInputs(string paymentType, decimal price)
+        {
+            if (string.IsNullOrWhiteSpace(paymentType))
+            {
+                return "Payment type cannot be empty.";
+            }
+
+            if (price < 0)
+            {
+                return "Price cannot be negative.";
+            }
+
+            return string.Empty;
         }
     }
 }

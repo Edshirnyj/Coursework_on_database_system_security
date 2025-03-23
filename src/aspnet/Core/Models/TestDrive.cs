@@ -2,15 +2,15 @@ namespace Core.Models
 {
     public class TestDrive
     {
-        public Guid TestDriveId { get; set; } = Guid.NewGuid();
-        public Guid ClientId { get; set; }
-        public Guid AutoId { get; set; }
-        public DateTime DateOfTest { get; set; }
-        public string FinePoints { get; set; } = string.Empty;
+        public Guid TestDriveId { get; private set; } = Guid.NewGuid();
+        public Guid ClientId { get; private set; }
+        public Guid AutoId { get; private set; }
+        public DateTime DateOfTest { get; private set; }
+        public string FinePoints { get; private set; } = string.Empty;
 
         // Navigation properties
-        public Client? Client { get; set; }
-        public Auto? Auto { get; set; }
+        public Client? Client { get; private set; }
+        public Auto? Auto { get; private set; }
 
         private TestDrive(Guid testDriveId, Guid clientId, Guid autoId, DateTime dateOfTest, string finePoints)
         {
@@ -23,27 +23,7 @@ namespace Core.Models
 
         public static (TestDrive? TestDrive, string Error) Create(Guid testDriveId, Guid clientId, Guid autoId, DateTime dateOfTest, string finePoints)
         {
-            string error = string.Empty;
-
-            if (clientId == Guid.Empty)
-            {
-                error = "Client ID cannot be empty.";
-            }
-
-            if (autoId == Guid.Empty)
-            {
-                error = "Auto ID cannot be empty.";
-            }
-
-            if (dateOfTest == default)
-            {
-                error = "Date of test cannot be empty.";
-            }
-
-            if (string.IsNullOrWhiteSpace(finePoints))
-            {
-                error = "Fine points cannot be empty.";
-            }
+            string error = ValidateInputs(clientId, autoId, dateOfTest, finePoints);
 
             if (!string.IsNullOrEmpty(error))
             {
@@ -52,6 +32,31 @@ namespace Core.Models
 
             var testDrive = new TestDrive(testDriveId, clientId, autoId, dateOfTest, finePoints);
             return (testDrive, error);
+        }
+
+        private static string ValidateInputs(Guid clientId, Guid autoId, DateTime dateOfTest, string finePoints)
+        {
+            if (clientId == Guid.Empty)
+            {
+                return "Client ID cannot be empty.";
+            }
+
+            if (autoId == Guid.Empty)
+            {
+                return "Auto ID cannot be empty.";
+            }
+
+            if (dateOfTest == default)
+            {
+                return "Date of test cannot be empty.";
+            }
+
+            if (string.IsNullOrWhiteSpace(finePoints))
+            {
+                return "Fine points cannot be empty.";
+            }
+
+            return string.Empty;
         }
     }
 }

@@ -2,9 +2,9 @@ namespace DataAccess.Entites
 {
     public class TradeEntity
     {
-        public Guid TradeId { get; set; } = Guid.NewGuid();
-        public string PaymentType { get; set; } = string.Empty;
-        public decimal Price { get; set; }
+        public Guid TradeId { get; private set; } = Guid.NewGuid();
+        public string PaymentType { get; private set; } = string.Empty;
+        public decimal Price { get; private set; }
 
     }
 }

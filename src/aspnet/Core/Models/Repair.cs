@@ -2,14 +2,13 @@ namespace Core.Models
 {
     public class Repair
     {
-        public Guid RepairId { get; set; } = Guid.NewGuid();
-        public Guid AutoId { get; set; }
-        public DateTime DateOfRepair { get; set; }
-        public Guid DetailId { get; set; }
+        public Guid RepairId { get; private set; } = Guid.NewGuid();
+        public Guid AutoId { get; private set; }
+        public DateTime DateOfRepair { get; private set; }
+        public Guid DetailId { get; private set; }
 
-        // Navigation properties for foreign keys
-        public Auto Auto { get; set; } = null!;
-        public Detail Detail { get; set; } = null!;
+        public Auto Auto { get; private set; } = null!;
+        public Detail Detail { get; private set; } = null!;
 
         private Repair(Guid repairId, Guid autoId, DateTime dateOfRepair, Guid detailId)
         {
@@ -21,22 +20,7 @@ namespace Core.Models
 
         public static (Repair? Repair, string Error) Create(Guid repairId, Guid autoId, DateTime dateOfRepair, Guid detailId)
         {
-            string error = string.Empty;
-
-            if (autoId == Guid.Empty)
-            {
-                error = "AutoId cannot be empty.";
-            }
-
-            if (detailId == Guid.Empty)
-            {
-                error = "DetailId cannot be empty.";
-            }
-
-            if (dateOfRepair == default)
-            {
-                error = "DateOfRepair cannot be default.";
-            }
+            string error = ValidateInputs(autoId, dateOfRepair, detailId);
 
             if (!string.IsNullOrEmpty(error))
             {
@@ -45,6 +29,26 @@ namespace Core.Models
 
             var repair = new Repair(repairId, autoId, dateOfRepair, detailId);
             return (repair, error);
+        }
+
+        private static string ValidateInputs(Guid autoId, DateTime dateOfRepair, Guid detailId)
+        {
+            if (autoId == Guid.Empty)
+            {
+                return "AutoId cannot be empty.";
+            }
+
+            if (detailId == Guid.Empty)
+            {
+                return "DetailId cannot be empty.";
+            }
+
+            if (dateOfRepair == default)
+            {
+                return "DateOfRepair cannot be default.";
+            }
+
+            return string.Empty;
         }
     }
 }

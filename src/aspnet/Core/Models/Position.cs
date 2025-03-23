@@ -1,17 +1,17 @@
 namespace Core.Models
 {
-    public class Continent
+    public class Position
     {
-        public Guid ContinentId { get; private set; } = Guid.NewGuid();
+        public Guid PositionId { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; } = string.Empty;
 
-        private Continent(Guid continentId, string name)
+        public Position(Guid positionId, string name)
         {
-            ContinentId = continentId;
+            PositionId = positionId;
             Name = name;
         }
 
-        public static (Continent? Continent, string Error) Create(Guid continentId, string name)
+        public static (Position? Position, string Error) Create(Guid positionId, string name)
         {
             string error = ValidateInputs(name);
 
@@ -20,8 +20,8 @@ namespace Core.Models
                 return (null, error);
             }
 
-            var continent = new Continent(continentId, name);
-            return (continent, string.Empty);
+            var position = new Position(positionId, name);
+            return (position, error);
         }
 
         private static string ValidateInputs(string name)

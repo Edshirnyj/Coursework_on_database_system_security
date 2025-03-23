@@ -2,13 +2,12 @@ namespace Core.Models
 {
     public class Passport
     {
-        public Guid PassportId { get; set; } = Guid.NewGuid();
-        public byte[] Number { get; set; } = null!;
-        public byte[] Session { get; set; } = null!;
-        public Guid CitizenId { get; set; }
+        public Guid PassportId { get; private set; } = Guid.NewGuid();
+        public byte[] Number { get; private set; } = null!;
+        public byte[] Session { get; private set; } = null!;
+        public Guid CitizenId { get; private set; }
 
-        // Navigation property
-        public Citizen Citizen { get; set; } = null!;
+        public Citizen Citizen { get; private set; } = null!;
 
         private Passport(Guid passportId, byte[] number, byte[] session, Guid citizenId)
         {
@@ -20,25 +19,33 @@ namespace Core.Models
 
         public static (Passport? Passport, string Error) Create(Guid passportId, byte[] number, byte[] session, Guid citizenId)
         {
-            string error = string.Empty;
-
-            if (number == null || number.Length == 0)
-            {
-                error = "Number cannot be null or empty.";
-            }
-
-            if (session == null || session.Length == 0)
-            {
-                error = "Session cannot be null or empty.";
-            }
+            string error = ValidateInputs(number, session);
 
             if (!string.IsNullOrEmpty(error))
             {
                 return (null, error);
             }
 
-            var passport = new Passport(passportId, number!, session!, citizenId);
+            var sanitizedNumber = (byte[])number!.Clone();
+            var sanitizedSession = (byte[])session!.Clone();
+
+            var passport = new Passport(passportId, sanitizedNumber, sanitizedSession, citizenId);
             return (passport, error);
+        }
+
+        private static string ValidateInputs(byte[] number, byte[] session)
+        {
+            if (number == null || number.Length == 0)
+            {
+                return "Number cannot be null or empty.";
+            }
+
+            if (session == null || session.Length == 0)
+            {
+                return "Session cannot be null or empty.";
+            }
+
+            return string.Empty;
         }
     }
 }
