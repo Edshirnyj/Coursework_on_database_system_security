@@ -3,20 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
-    public class CarForSaleDbContext : DbContext
+    public class CarForSaleDbContext(DbContextOptions<CarForSaleDbContext> options) : DbContext(options)
     {
-        public CarForSaleDbContext(DbContextOptions<CarForSaleDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<AutoEntity> Autos { get; set; } = null!;
         public DbSet<BrandEntity> Brands { get; set; } = null!;
         public DbSet<CitizenEntity> Citizens { get; set; } = null!;
+        public DbSet<ClientEntity> Clients { get; set; } = null!;
         public DbSet<ContinentEntity> Continents { get; set; } = null!;
         public DbSet<ContractEntity> Contracts { get; set; } = null!;
-        public DbSet<ContractTypeEntity> ContractTypes { get; set; } = null!;
-        public DbSet<CurrentCarEntity> CurrentCars { get; set; } = null!;
-        public DbSet<DesiredEntity> Desired { get; set; } = null!;
+        public DbSet<DesiredEntity> Desireds { get; set; } = null!;
         public DbSet<DetailEntity> Details { get; set; } = null!;
         public DbSet<HistoryTransformEntity> HistoryTransforms { get; set; } = null!;
         public DbSet<MechanicEntity> Mechanics { get; set; } = null!;
@@ -31,6 +26,7 @@ namespace DataAccess
         public DbSet<StatusEntity> Statuses { get; set; } = null!;
         public DbSet<TestDriveEntity> TestDrives { get; set; } = null!;
         public DbSet<TradeEntity> Trades { get; set; } = null!;
+        public DbSet<TypeContractEntity> TypeContracts { get; set; } = null!;
         
     }
 }

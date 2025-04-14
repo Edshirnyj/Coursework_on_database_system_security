@@ -8,7 +8,7 @@ namespace Core.Models
         private Status(Guid statusId, string name)
         {
             StatusId = statusId;
-            Name = name.Trim();
+            Name = name;
         }
 
         public static (Status? Status, string Error) Create(Guid statusId, string name)
@@ -16,26 +16,19 @@ namespace Core.Models
             string error = ValidateInputs(name);
 
             if (!string.IsNullOrEmpty(error))
-            {
                 return (null, error);
-            }
 
-            var sanitizedStatusId = statusId == Guid.Empty ? Guid.NewGuid() : statusId;
-            var status = new Status(sanitizedStatusId, name);
+            var status = new Status(statusId, name);
             return (status, error);
         }
 
         private static string ValidateInputs(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-            {
                 return "Name cannot be empty.";
-            }
 
-            if (name.Length > 100)
-            {
-                return "Name cannot exceed 100 characters.";
-            }
+            if (name.Length > 50)
+                return "Name cannot exceed 50 characters.";
 
             return string.Empty;
         }

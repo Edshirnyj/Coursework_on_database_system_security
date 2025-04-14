@@ -16,25 +16,19 @@ namespace Core.Models
             string error = ValidateInputs(name);
 
             if (!string.IsNullOrEmpty(error))
-            {
                 return (null, error);
-            }
 
             var continent = new Continent(continentId, name);
-            return (continent, string.Empty);
+            return (continent, error);
         }
 
         private static string ValidateInputs(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-            {
                 return "Name cannot be empty.";
-            }
 
-            if (name.Length > 100)
-            {
-                return "Name cannot exceed 100 characters.";
-            }
+            if (name.Length > 50)
+                return "Name cannot exceed 50 characters.";
 
             return string.Empty;
         }

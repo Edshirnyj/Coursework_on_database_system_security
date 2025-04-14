@@ -4,7 +4,7 @@ namespace Core.Models
     {
         public Guid BrandId { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; } = string.Empty;
-        public Guid ContinentId { get; private set; }
+        public Guid ContinentId { get; private set; } = Guid.NewGuid();
 
         public Continent Continent { get; private set; } = null!;
 
@@ -20,9 +20,7 @@ namespace Core.Models
             string error = ValidateInputs(name, continentId);
 
             if (!string.IsNullOrEmpty(error))
-            {
                 return (null, error);
-            }
 
             var brand = new Brand(brandId, name, continentId);
             return (brand, error);
@@ -30,15 +28,14 @@ namespace Core.Models
 
         private static string ValidateInputs(string name, Guid continentId)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return "Name cannot be empty.";
-            }
-
             if (continentId == Guid.Empty)
-            {
-                return "ContinentId cannot be empty.";
-            }
+                return "Continent ID cannot be empty.";
+
+            if (string.IsNullOrWhiteSpace(name))
+                return "Name cannot be empty.";
+
+            if (name.Length > 50)
+                return "Name cannot exceed 50 characters.";
 
             return string.Empty;
         }

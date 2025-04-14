@@ -4,6 +4,5 @@ namespace DataAccess.Entites
     {
         public Guid PositionId { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; } = string.Empty;
-
     }
 }

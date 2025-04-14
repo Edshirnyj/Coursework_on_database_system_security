@@ -2,34 +2,33 @@ namespace Core.Models
 {
     public class Citizen
     {
-        public Guid CitizenId { get; set; } = Guid.NewGuid();
-        public string Location { get; set; } = null!;
+        public Guid CitizenId { get; private set; } = Guid.NewGuid();
+        public string Location { get; private set; } = string.Empty;
 
         private Citizen(Guid citizenId, string location)
         {
             CitizenId = citizenId;
-            Location = Location;
+            Location = location;
         }
 
-        public static (Citizen? Citizen, string Error) Create(Guid citizenId, string name)
+        public static (Citizen? Citizen, string Error) Create(Guid citizenId, string location)
         {
-            string error = ValidateInputs(name);
+            string error = ValidateInputs(location);
 
-            var citizen = new Citizen(citizenId, name);
+            if (!string.IsNullOrEmpty(error))
+                return (null, error);
+
+            var citizen = new Citizen(citizenId, location);
             return (citizen, error);
         }
 
         private static string ValidateInputs(string location)
         {
             if (string.IsNullOrWhiteSpace(location))
-            {
                 return "Location cannot be empty.";
-            }
 
-            if (location.Length > 100)
-            {
-                return "Location cannot exceed 100 characters.";
-            }
+            if (location.Length > 50)
+                return "Location cannot exceed 50 characters.";
 
             return string.Empty;
         }

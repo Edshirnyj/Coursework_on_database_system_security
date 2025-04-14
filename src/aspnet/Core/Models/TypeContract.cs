@@ -1,25 +1,25 @@
 namespace Core.Models
 {
-    public class Position
+    public class TypeContract
     {
-        public Guid PositionId { get; private set; } = Guid.NewGuid();
+        public Guid TypeContractId { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; } = string.Empty;
 
-        private Position(Guid positionId, string name)
+        private TypeContract(Guid typeContractId, string name)
         {
-            PositionId = positionId;
+            TypeContractId = typeContractId;
             Name = name;
         }
 
-        public static (Position? Position, string Error) Create(Guid positionId, string name)
+        public static (TypeContract? TypeContract, string Error) Create(Guid typeContractId, string name)
         {
             string error = ValidateInputs(name);
 
             if (!string.IsNullOrEmpty(error))
                 return (null, error);
 
-            var position = new Position(positionId, name);
-            return (position, error);
+            var typeContract = new TypeContract(typeContractId, name);
+            return (typeContract, error);
         }
 
         private static string ValidateInputs(string name)

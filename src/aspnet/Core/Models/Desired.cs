@@ -24,9 +24,7 @@ namespace Core.Models
             string error = ValidateInputs(clientId, modelId, brandId);
 
             if (!string.IsNullOrEmpty(error))
-            {
                 return (null, error);
-            }
 
             var desired = new Desired(desiredId, clientId, modelId, brandId);
             return (desired, error);
@@ -35,19 +33,13 @@ namespace Core.Models
         private static string ValidateInputs(Guid clientId, Guid modelId, Guid brandId)
         {
             if (clientId == Guid.Empty)
-            {
-                return "ClientId cannot be empty.";
-            }
+                return "Client ID cannot be empty.";
 
             if (modelId == Guid.Empty)
-            {
-                return "ModelId cannot be empty.";
-            }
+                return "Model ID cannot be empty.";
 
             if (brandId == Guid.Empty)
-            {
-                return "BrandId cannot be empty.";
-            }
+                return "Brand ID cannot be empty.";
 
             return string.Empty;
         }

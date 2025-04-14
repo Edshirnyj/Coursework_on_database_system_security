@@ -3,9 +3,9 @@ namespace Core.Models
     public class Repair
     {
         public Guid RepairId { get; private set; } = Guid.NewGuid();
-        public Guid AutoId { get; private set; }
-        public DateTime DateOfRepair { get; private set; }
-        public Guid DetailId { get; private set; }
+        public Guid AutoId { get; private set; } = Guid.NewGuid();
+        public DateTime DateOfRepair { get; private set; } = DateTime.Now;
+        public Guid DetailId { get; private set; } = Guid.NewGuid();
 
         public Auto Auto { get; private set; } = null!;
         public Detail Detail { get; private set; } = null!;
@@ -20,33 +20,25 @@ namespace Core.Models
 
         public static (Repair? Repair, string Error) Create(Guid repairId, Guid autoId, DateTime dateOfRepair, Guid detailId)
         {
-            string error = ValidateInputs(autoId, dateOfRepair, detailId);
+            string error = ValidateInputs(autoId, detailId, dateOfRepair);
 
             if (!string.IsNullOrEmpty(error))
-            {
                 return (null, error);
-            }
 
             var repair = new Repair(repairId, autoId, dateOfRepair, detailId);
             return (repair, error);
         }
 
-        private static string ValidateInputs(Guid autoId, DateTime dateOfRepair, Guid detailId)
+        private static string ValidateInputs(Guid autoId, Guid detailId, DateTime dateOfRepair)
         {
             if (autoId == Guid.Empty)
-            {
-                return "AutoId cannot be empty.";
-            }
+                return "Auto ID cannot be empty.";
 
             if (detailId == Guid.Empty)
-            {
-                return "DetailId cannot be empty.";
-            }
+                return "Detail ID cannot be empty.";
 
-            if (dateOfRepair == default)
-            {
-                return "DateOfRepair cannot be default.";
-            }
+            if (dateOfRepair > DateTime.Now)
+                return "Date of repair cannot be in the future.";
 
             return string.Empty;
         }
