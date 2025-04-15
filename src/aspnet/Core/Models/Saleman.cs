@@ -1,8 +1,8 @@
 namespace Core.Models
 {
-    public class Saleman
+    public class Salesman
     {
-        public Guid SalemanId { get; private set; } = Guid.NewGuid();
+        public Guid SalesmanId { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; } = string.Empty;
         public string Surname { get; private set; } = string.Empty;
         public string Patronymic { get; private set; } = string.Empty;
@@ -10,16 +10,16 @@ namespace Core.Models
 
         public Position Position { get; private set; } = null!;
 
-        private Saleman(Guid salemanId, string name, string surname, string patronymic, Guid positionId)
+        private Salesman(Guid salesmanId, string name, string surname, string patronymic, Guid positionId)
         {
-            SalemanId = salemanId;
+            SalesmanId = salesmanId;
             Name = name;
             Surname = surname;
             Patronymic = patronymic;
             PositionId = positionId;
         }
 
-        public static (Saleman? Saleman, string Error) Create(Guid salemanId, string name, string surname, 
+        public static (Salesman? Salesman, string Error) Create(Guid salesmanId, string name, string surname, 
                                                               string patronymic, Guid positionId)
         {
             string error = ValidateInputs(name, surname, patronymic);
@@ -27,8 +27,8 @@ namespace Core.Models
             if (!string.IsNullOrEmpty(error))
                 return (null, error);
 
-            var saleman = new Saleman(salemanId, name, surname, patronymic, positionId);
-            return (saleman, error);
+            var salesman = new Salesman(salesmanId, name, surname, patronymic, positionId);
+            return (salesman, error);
         }
 
         private static string ValidateInputs(string name, string surname, string patronymic)

@@ -1,9 +1,9 @@
 using DataAccess.Entites;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess
+namespace DataAccess.Contexts
 {
-    public class CarForSaleDbContext(DbContextOptions<CarForSaleDbContext> options) : DbContext(options)
+    public class MechanicDbContext(DbContextOptions<MechanicDbContext> options) : DbContext(options)
     {
         public DbSet<AutoEntity> Autos { get; set; } = null!;
         public DbSet<BrandEntity> Brands { get; set; } = null!;
@@ -20,9 +20,9 @@ namespace DataAccess
         public DbSet<PositionEntity> Positions { get; set; } = null!;
         public DbSet<ProfileClientEntity> ProfileClients { get; set; } = null!;
         public DbSet<ProfileMechanicEntity> ProfileMechanics { get; set; } = null!;
-        public DbSet<ProfileSalemanEntity> ProfileSalemans { get; set; } = null!;
+        public DbSet<ProfileSalesmanEntity> ProfileSalesmans { get; set; } = null!;
         public DbSet<RepairEntity> Repairs { get; set; } = null!;
-        public DbSet<SalemanEntity> Salemans { get; set; } = null!;
+        public DbSet<SalesmanEntity> Salesmans { get; set; } = null!;
         public DbSet<StatusEntity> Statuses { get; set; } = null!;
         public DbSet<TestDriveEntity> TestDrives { get; set; } = null!;
         public DbSet<TradeEntity> Trades { get; set; } = null!;

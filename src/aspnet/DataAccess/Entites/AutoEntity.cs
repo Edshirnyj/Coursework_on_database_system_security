@@ -4,6 +4,7 @@ namespace DataAccess.Entites
     {
         public Guid AutoId { get; private set; } = Guid.NewGuid();
         public Guid ModelId { get; private set; } = Guid.NewGuid();
+        public Guid BrandId { get; private set; } = Guid.NewGuid();
         public int Year { get; private set; } = DateTime.Now.Year;
         public string Color { get; private set; } = string.Empty;
         public byte[] Vin { get; private set; } = [];

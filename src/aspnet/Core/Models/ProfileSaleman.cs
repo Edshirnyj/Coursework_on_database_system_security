@@ -2,23 +2,23 @@ using System.Text.RegularExpressions;
 
 namespace Core.Models
 {
-    public class ProfileSaleman
+    public class ProfileSalesman
     {
         public Guid ProfileId { get; private set; } = Guid.NewGuid();
-        public Guid SalemanId { get; private set; } = Guid.NewGuid();
+        public Guid SalesmanId { get; private set; } = Guid.NewGuid();
         public string EMail { get; private set; } = string.Empty;
         public string Phone { get; private set; } = string.Empty;
         public string Username { get; private set; } = string.Empty;
         public byte[] Password { get; private set; } = [];
         public byte[] SecretKey { get; private set; } = [];
 
-        public Saleman Saleman { get; private set; } = null!;
+        public Salesman Salesman { get; private set; } = null!;
 
-        private ProfileSaleman(Guid profileId, Guid salemanId, string email, string phone, 
+        private ProfileSalesman(Guid profileId, Guid salesmanId, string email, string phone, 
                                 string username, byte[] password, byte[] secretKey)
         {
             ProfileId = profileId;
-            SalemanId = salemanId;
+            SalesmanId = salesmanId;
             EMail = email;
             Phone = phone;
             Username = username;
@@ -26,7 +26,7 @@ namespace Core.Models
             SecretKey = secretKey;
         }
 
-        public static (ProfileSaleman? ProfileSaleman, string Error) Create(Guid profileId, Guid salemanId, 
+        public static (ProfileSalesman? ProfileSalesman, string Error) Create(Guid profileId, Guid salesmanId, 
                                                                             string email, string phone, 
                                                                             string username, byte[] password, 
                                                                             byte[] secretKey)
@@ -36,8 +36,8 @@ namespace Core.Models
             if (!string.IsNullOrEmpty(error))
                 return (null, error);
 
-            var profileSaleman = new ProfileSaleman(profileId, salemanId, email, phone, username, password, secretKey);
-            return (profileSaleman, error);
+            var profileSalesman = new ProfileSalesman(profileId, salesmanId, email, phone, username, password, secretKey);
+            return (profileSalesman, error);
         }
 
         private static string ValidateInputs(string email, string phone, string username, 

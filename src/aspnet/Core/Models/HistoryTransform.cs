@@ -3,32 +3,32 @@ namespace Core.Models
     public class HistoryTransform
     {
         public Guid TransformId { get; private set; } = Guid.NewGuid();
-        public Guid SalemanId { get; private set; } = Guid.NewGuid();
+        public Guid SalesmanId { get; private set; } = Guid.NewGuid();
         public Guid ClientId { get; private set; } = Guid.NewGuid();
         public Guid ContractId { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; } = string.Empty;
 
         public Client Client { get; set; } = null!;
-        public Saleman Saleman { get; set; } = null!;
+        public Salesman Salesman { get; set; } = null!;
         public Contract Contract { get; set; } = null!;
 
-        private HistoryTransform(Guid transformId, Guid salemanId, Guid clientId, Guid contractId, string name)
+        private HistoryTransform(Guid transformId, Guid salesmanId, Guid clientId, Guid contractId, string name)
         {
             TransformId = transformId;
-            SalemanId = salemanId;
+            SalesmanId = salesmanId;
             ClientId = clientId;
             ContractId = contractId;
             Name = name;
         }
 
-        public static (HistoryTransform? HistoryTransform, string Error) Create(Guid transformId, Guid salemanId, Guid clientId, Guid contractId, string name)
+        public static (HistoryTransform? HistoryTransform, string Error) Create(Guid transformId, Guid salesmanId, Guid clientId, Guid contractId, string name)
         {
             string error = ValidateInputs(name);
 
             if (!string.IsNullOrEmpty(error))
                 return (null, error);
 
-            var historyTransform = new HistoryTransform(transformId, salemanId, clientId, contractId, name);
+            var historyTransform = new HistoryTransform(transformId, salesmanId, clientId, contractId, name);
             return (historyTransform, error);
         }
 

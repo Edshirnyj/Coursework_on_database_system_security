@@ -1,11 +1,23 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DataAccess.Entites
 {
-    public class SalemanEntity
+    [Table("salesmans")]
+    public class SalesmanEntity
     {
-        public Guid SalemanId { get; private set; } = Guid.NewGuid();
+        [Column("salesman_id")]
+        public Guid SalesmanId { get; private set; } = Guid.NewGuid();
+        
+        [Column("name")]
         public string Name { get; private set; } = string.Empty;
+        
+        [Column("surname")]
         public string Surname { get; private set; } = string.Empty;
+        
+        [Column("patronymic")]
         public string Patronymic { get; private set; } = string.Empty;
+        
+        [Column("position_id")]
         public Guid PositionId { get; private set; } = Guid.NewGuid();
     }
 }
