@@ -7,16 +7,15 @@ namespace DataAccess.Entites
     {
         [Column("brand_id")]
         public Guid BrandId { get; private set; } = Guid.NewGuid();
-        
+
         [Column("name")]
         public string Name { get; private set; } = string.Empty;
-        
+
         [Column("continent_id")]
         public Guid ContinentId { get; private set; } = Guid.NewGuid();
 
         
-        [ForeignKey("continent_id")]
-        public ContinentEntity Continent { get; private set; } = new ContinentEntity();
-
+        [ForeignKey(nameof(ContinentId))]
+        public ContinentEntity? Continents { get; set; }
     }
 }

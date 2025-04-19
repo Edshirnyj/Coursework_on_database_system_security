@@ -7,8 +7,8 @@ namespace DataAccess.Entites
     {
         [Column("status_id")]
         public Guid StatusId { get; private set; } = Guid.NewGuid();
-        
+
         [Column("name")]
         public string Name { get; private set; } = string.Empty;
-    }  
+    }
 }

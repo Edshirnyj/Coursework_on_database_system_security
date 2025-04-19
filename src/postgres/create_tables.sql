@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS autos
     auto_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     model_id UUID NOT NULL,
     brand_id UUID NOT NULL,
-    year_of_issue DATE NOT NULL,
+    year_of_issue INTEGER NOT NULL,
     color VARCHAR(255) NOT NULL,
     vin VARCHAR(16) NOT NULL UNIQUE,
     photo_path TEXT NOT NULL,

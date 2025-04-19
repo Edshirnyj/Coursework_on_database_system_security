@@ -7,7 +7,7 @@ namespace DataAccess.Entites
     {
         [Column("continent_id")]
         public Guid ContinentId { get; private set; } = Guid.NewGuid();
-        
+
         [Column("name")]
         public string Name { get; private set; } = string.Empty;
     }
