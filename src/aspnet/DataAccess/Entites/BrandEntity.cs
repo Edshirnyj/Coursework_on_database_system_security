@@ -14,5 +14,9 @@ namespace DataAccess.Entites
         [Column("continent_id")]
         public Guid ContinentId { get; private set; } = Guid.NewGuid();
 
+        
+        [ForeignKey("continent_id")]
+        public ContinentEntity Continent { get; private set; } = new ContinentEntity();
+
     }
 }

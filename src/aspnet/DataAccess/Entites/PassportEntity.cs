@@ -16,5 +16,8 @@ namespace DataAccess.Entites
         
         [Column("citizen_id")]
         public Guid CitizenId { get; private set; } = Guid.Empty;
+
+        [ForeignKey("citizen_id")]
+        public CitizenEntity Citizen { get; private set; } = new CitizenEntity();
     }
 }

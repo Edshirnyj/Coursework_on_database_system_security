@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Entites
 {
-    [Table("profile_salesman")]
+    [Table("profile_salesmans")]
     public class ProfileSalesmanEntity
     {
         [Column("profile_id")]
@@ -25,5 +25,15 @@ namespace DataAccess.Entites
         
         [Column("secret_key")]
         public byte[] SecretKey { get; private set; } = [];
+
+        [Column("created_at")]
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
+
+
+        [ForeignKey("salesman_id")]
+        public SalesmanEntity Salesman { get; private set; } = new SalesmanEntity();
     }
 }

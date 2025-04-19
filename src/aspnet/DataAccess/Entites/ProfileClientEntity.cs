@@ -25,5 +25,15 @@ namespace DataAccess.Entites
         
         [Column("secret_key")]
         public byte[] SecretKey { get; private set; } = [];
+
+        [Column("created_at")]
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
+
+
+        [ForeignKey("client_id")]
+        public ClientEntity Client { get; private set; } = new ClientEntity();
     }
 }

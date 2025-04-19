@@ -25,5 +25,8 @@ namespace DataAccess.Entites
         
         [Column("passport_id")]
         public Guid PassportId { get; private set; } = Guid.NewGuid();
+
+        [ForeignKey("passport_id")]
+        public PassportEntity Passport { get; private set; } = new PassportEntity();
     }
 }
