@@ -22,6 +22,7 @@ namespace DataAccess.Entites
         [Column("position_id")]
         public Guid PositionId { get; private set; } = Guid.NewGuid();
 
+        
         [ForeignKey(nameof(PositionId))]
         public PositionEntity? Position { get; set; } 
     }

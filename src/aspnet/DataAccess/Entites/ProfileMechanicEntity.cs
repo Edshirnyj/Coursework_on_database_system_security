@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DataAccess.Entites
 {
@@ -14,19 +15,19 @@ namespace DataAccess.Entites
         public Guid MechanicId { get; private set; } = Guid.NewGuid();
 
         [Column("e_mail")]
-        public string Email { get; private set; } = string.Empty;
+        public byte[] Email { get; private set; } = [];
 
         [Column("phone")]
-        public string Phone { get; private set; } = string.Empty;
+        public byte[] Phone { get; private set; } = [];
 
         [Column("username")]
         public string Username { get; private set; } = string.Empty;
 
         [Column("password")]
-        public string Password { get; private set; } = string.Empty;
+        public byte[] Password { get; private set; } = [];
 
         [Column("secret_key")]
-        public string SecretKey { get; private set; } = string.Empty;
+        public byte[] SecretKey { get; private set; } = [];
 
         [Column("created_at")]
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
