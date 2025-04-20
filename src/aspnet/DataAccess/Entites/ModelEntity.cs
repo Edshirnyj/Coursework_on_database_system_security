@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Entites
 {
     [Table("models")]
+    [PrimaryKey(nameof(ModelId))]
     public class ModelEntity
     {
         [Column("model_id")]

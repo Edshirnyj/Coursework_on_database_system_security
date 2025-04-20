@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Entites
 {
     [Table("trades")]
+    [PrimaryKey(nameof(TradeId))]
     public class TradeEntity
     {
         [Column("trade_id")]

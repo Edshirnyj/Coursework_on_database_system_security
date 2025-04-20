@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Entites
 {
     [Table("statuses")]
+    [PrimaryKey(nameof(StatusId))]
     public class StatusEntity
     {
         [Column("status_id")]

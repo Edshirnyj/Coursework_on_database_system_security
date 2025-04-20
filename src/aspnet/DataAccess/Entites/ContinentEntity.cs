@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Entites
 {
     [Table("continents")]
+    [PrimaryKey(nameof(ContinentId))]
     public class ContinentEntity
     {
         [Column("continent_id")]

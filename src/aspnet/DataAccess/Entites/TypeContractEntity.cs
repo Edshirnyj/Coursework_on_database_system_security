@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Entites
 {
     [Table("type_contracts")]
+    [PrimaryKey(nameof(TypeContractId))]
     public class TypeContractEntity
     {
         [Column("type_contract_id")]

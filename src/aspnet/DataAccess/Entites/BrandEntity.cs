@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Entites
 {
     [Table("brands")]
+    [PrimaryKey(nameof(BrandId))]
     public class BrandEntity
     {
         [Column("brand_id")]

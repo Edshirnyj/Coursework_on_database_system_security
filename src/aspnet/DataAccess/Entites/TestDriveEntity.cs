@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Entites
 {
     [Table("test_drives")]
+    [PrimaryKey(nameof(TestId))]
     public class TestDriveEntity
     {
         [Column("test_id")]
