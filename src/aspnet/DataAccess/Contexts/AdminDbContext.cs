@@ -9,7 +9,6 @@ namespace DataAccess.Contexts
         public DbSet<BrandEntity> Brands { get; set; } = null!;
         public DbSet<CitizenEntity> Citizens { get; set; } = null!;
         public DbSet<ClientEntity> Clients { get; set; } = null!;
-        public DbSet<ClientEntity> Clients { get; set; } = null!;
         public DbSet<ContinentEntity> Continents { get; set; } = null!;
         public DbSet<ContractEntity> Contracts { get; set; } = null!;
         public DbSet<DesiredEntity> Desireds { get; set; } = null!;
