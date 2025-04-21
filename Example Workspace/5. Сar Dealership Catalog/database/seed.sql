@@ -1,0 +1,31 @@
+INSERT INTO Cars (Make, Model, Year, Price, Description) VALUES
+('Toyota', 'Camry', 2020, 24000, 'Reliable and fuel-efficient sedan.'),
+('Honda', 'Civic', 2019, 22000, 'Compact car with sporty handling.'),
+('Ford', 'Mustang', 2021, 35000, 'Iconic muscle car with powerful performance.'),
+('Chevrolet', 'Malibu', 2018, 20000, 'Comfortable midsize sedan with spacious interior.'),
+('Nissan', 'Altima', 2020, 23000, 'Stylish sedan with advanced safety features.'),
+('BMW', '3 Series', 2021, 42000, 'Luxury sedan with exceptional driving dynamics.'),
+('Mercedes-Benz', 'C-Class', 2020, 45000, 'Sophisticated sedan with premium features.'),
+('Volkswagen', 'Jetta', 2019, 19000, 'Compact sedan with a spacious trunk.'),
+('Subaru', 'Outback', 2021, 30000, 'Versatile SUV with all-wheel drive.'),
+('Kia', 'Sorento', 2020, 28000, 'Family-friendly SUV with ample cargo space.');
+
+INSERT INTO Filters (FilterType, FilterValue) VALUES
+('Make', 'Toyota'),
+('Make', 'Honda'),
+('Make', 'Ford'),
+('Make', 'Chevrolet'),
+('Make', 'Nissan'),
+('Make', 'BMW'),
+('Make', 'Mercedes-Benz'),
+('Make', 'Volkswagen'),
+('Make', 'Subaru'),
+('Make', 'Kia'),
+('Year', '2018'),
+('Year', '2019'),
+('Year', '2020'),
+('Year', '2021'),
+('Price', 'Under 20000'),
+('Price', '20000 - 30000'),
+('Price', '30000 - 40000'),
+('Price', '40000 and above');

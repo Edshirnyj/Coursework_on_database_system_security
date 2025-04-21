@@ -1,27 +1,20 @@
-using DataAccess.Contexts;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<AdminDbContext>(
-    options =>
-    {
-        options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(AdminDbContext)));
-    });
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+namespace API
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    public class Program
+    {
+    public static void Main (string[] args)
+    {
+        CreateHostBuilder(args).Build ().Run ();
+    }
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-app.Run();
+    public static IHostBuilder CreateHostBuilder (string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults (webBuilder => 
+            { 
+                webBuilder.UseStartup<Startup> (); 
+            });
+    }
+}
