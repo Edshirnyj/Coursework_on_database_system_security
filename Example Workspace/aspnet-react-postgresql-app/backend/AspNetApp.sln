@@ -1,0 +1,18 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31913.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E53F8E8B-9B7D-4B7C-8B6D-8B1B3D4D5D3E}") = "AspNetApp", "AspNetApp\AspNetApp.csproj", "{D1A2B3C4-E5F6-7A8B-9A0B-1C2D3E4F5G6H}"
+EndProject
+Global
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Debug|Any CPU = Debug|Any CPU
+        Release|Any CPU = Release|Any CPU
+    EndGlobalSection
+    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+        {D1A2B3C4-E5F6-7A8B-9A0B-1C2D3E4F5G6H}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {D1A2B3C4-E5F6-7A8B-9A0B-1C2D3E4F5G6H}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {D1A2B3C4-E5F6-7A8B-9A0B-1C2D3E4F5G6H}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {D1A2B3C4-E5F6-7A8B-9A0B-1C2D3E4F5G6H}.Release|Any CPU.Build.0 = Release|Any CPU
+    EndGlobalSection
+EndGlobal
